@@ -1,10 +1,16 @@
+const { $where } = require("../models/movie");
 const Movie = require("../models/movie");
 const moviesCtrl = {};
 
 moviesCtrl.getMovies = async (req, res) => {
   const limit = Number(req.query.limitToFirst);
   const startAt = Number(req.query.startAt);
-  const movies = await Movie.find(
+  const filter = {
+    "genre": req.query.genre,
+    "year": req.query.year,
+    "title": req.query.title
+  }
+  var movies = await Movie.find(
     {
         year: { $type: "int"},
         countries: { $exists: true, $ne: [] },
@@ -20,11 +26,22 @@ moviesCtrl.getMovies = async (req, res) => {
       imdb: 1,
     }
   )
-    .skip(startAt)
-    .sort({ year: -1 })
-    .limit(limit);
+  .skip(startAt)
+  .sort({ year: -1 })
+  .limit(limit);
+  /*
+  if(filter.genre != '') movies = movies.where('genres').in([filter.genre]);
+  if(filter.year != '') movies = movies.where('year').equals(Number(filter.year));
+  if(filter.title != '') movies = movies.where('title').equals(filter.title);
+  
+  movies = movies.skip(startAt)
+  .sort({ year: -1 })
+  .limit(limit);
+  */
   console.log(res.json(movies));
+  console.log(filter)
 };
+
 
 moviesCtrl.getMoviebyId = async (req, res) => {
   const id = req.params.id;
