@@ -37,16 +37,18 @@ moviesCtrl.getMoviesFiltered = async (req, res) => {
   const startAt = Number(req.query.startAt);
   const filter = {
     "genre": req.query.genre,
-    "year": req.query.year,
+    "year": Number(req.query.year),
     "title": req.query.title
   }
+  
   const movies = await Movie.find(
     {
-        year: { $type: "int"},
-        countries: { $exists: true, $ne: [] },
-        genres: { $exists: true, $ne: [] },
-        directors: { $exists: true, $ne: [] },
-        title: { $eq: filter.title},
+      year: { $type: "int"},
+      countries: { $exists: true, $ne: [] },
+      genres: { $exists: true, $ne: [] },
+      directors: { $exists: true, $ne: [] },
+      title: { $eq: filter.title},
+
     },
     {
       title: 1,
@@ -62,7 +64,6 @@ moviesCtrl.getMoviesFiltered = async (req, res) => {
   .limit(limit);
   console.log(res.json(movies));
   console.log("Filter llamado")
-
 };
 
 
