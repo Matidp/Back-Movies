@@ -10,10 +10,13 @@ router.get("/", moviesCtrl.getMovies);
 
 router.post("/", moviesCtrl.createMovie);
 
+router.get("/filter", moviesCtrl.getMoviesFiltered);
+
 router.get("/:id", moviesCtrl.getMoviebyId);
 
 router.put("/:id", moviesCtrl.updateMovie);
 
 router.delete("/:id", moviesCtrl.deleteMovie);
+
 
 module.exports = router;
