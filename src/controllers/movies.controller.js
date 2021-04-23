@@ -47,7 +47,7 @@ moviesCtrl.getMoviesFiltered = async (req, res) => {
       countries: { $exists: true, $ne: [] },
       genres: { $exists: true, $ne: [] },
       directors: { $exists: true, $ne: [] },
-      title: { $eq: filter.title},
+      title: { $regex: new RegExp("^" + filter.title.toLowerCase(), "i")},
 
     },
     {
@@ -69,12 +69,14 @@ moviesCtrl.getMoviesFiltered = async (req, res) => {
 
 moviesCtrl.getMoviebyId = async (req, res) => {
   const id = req.params.id;
+  console.log(id);
   try {
     const movie = await Movie.findById(id);
     res.send(movie);
   } catch {
     console.log("The movie does not exist");
   }
+  console.log("GetMovieByID llamado")
 };
 
 moviesCtrl.createMovie = (req, res) => {
